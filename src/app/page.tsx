@@ -1,106 +1,106 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import Room from "./components/Room"
-import VacuumCleaner from "./components/VacuumCleaner"
+import { useState, useEffect, useCallback } from "react";
+import { Button } from "@/components/ui/button";
+import Room from "@/components/Room";
+import VacuumCleaner from "@/components/VacuumCleaner";
 
 class Environment {
-  rooms: boolean[]
+  rooms: boolean[];
 
   constructor() {
-    this.rooms = [false, false]
+    this.rooms = [false, false];
   }
 
   applyAction(action: string, agentPosition: number): number {
     switch (action) {
       case "SUCK":
-        this.rooms[agentPosition] = false
-        break
+        this.rooms[agentPosition] = false;
+        break;
       case "MOVE_LEFT":
-        return 0
+        return 0;
       case "MOVE_RIGHT":
-        return 1
+        return 1;
     }
-    return agentPosition
+    return agentPosition;
   }
 
   randomize() {
-    this.rooms[0] = Math.random() < 0.3
-    this.rooms[1] = Math.random() < 0.3
+    this.rooms[0] = Math.random() < 0.3;
+    this.rooms[1] = Math.random() < 0.3;
   }
 }
 
 export default function Home() {
-  const [environment, setEnvironment] = useState(new Environment())
-  const [agentPosition, setAgentPosition] = useState(0)
-  const [action, setAction] = useState("")
-  const [isRunning, setIsRunning] = useState(false)
-  const [stepCount, setStepCount] = useState(0)
-  const [totalDirt, setTotalDirt] = useState(0)
+  const [environment, setEnvironment] = useState(new Environment());
+  const [agentPosition, setAgentPosition] = useState(0);
+  const [action, setAction] = useState("");
+  const [isRunning, setIsRunning] = useState(false);
+  const [stepCount, setStepCount] = useState(0);
+  const [totalDirt, setTotalDirt] = useState(0);
+
+  const step = useCallback(() => {
+    const perceive = () => {
+      return {
+        position: agentPosition,
+        isDirty: environment.rooms[agentPosition],
+      };
+    };
+
+    const newEnvironment = new Environment();
+    newEnvironment.rooms = [...environment.rooms];
+
+    if (stepCount % 5 === 0) {
+      newEnvironment.randomize();
+    }
+
+    const perception = perceive();
+    const newAction = act(perception);
+
+    setAction(newAction);
+    if (newAction === "SUCK") {
+      setTotalDirt((prev) => prev + 1);
+    }
+
+    const newPosition = newEnvironment.applyAction(newAction, agentPosition);
+
+    setEnvironment(newEnvironment);
+    setAgentPosition(newPosition);
+    setStepCount((prev) => prev + 1);
+  }, [environment, agentPosition, stepCount]);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout
+    let interval: NodeJS.Timeout;
     if (isRunning) {
       interval = setInterval(() => {
-        step()
-      }, 1000)
+        step();
+      }, 1000);
     }
-    return () => clearInterval(interval)
-  }, [isRunning])
-
-  const perceive = () => {
-    return {
-      position: agentPosition,
-      isDirty: environment.rooms[agentPosition],
-    }
-  }
+    return () => clearInterval(interval);
+  }, [isRunning, step]);
 
   const act = (perception: { position: number; isDirty: boolean }) => {
     if (perception.isDirty) {
-      return "SUCK"
+      return "SUCK";
     } else if (perception.position === 0) {
-      return "MOVE_RIGHT"
+      return "MOVE_RIGHT";
     } else {
-      return "MOVE_LEFT"
+      return "MOVE_LEFT";
     }
-  }
-
-  const step = () => {
-    const newEnvironment = new Environment()
-    newEnvironment.rooms = [...environment.rooms]
-
-    if (stepCount % 5 === 0) {
-      newEnvironment.randomize()
-    }
-
-    const perception = perceive()
-    const newAction = act(perception)
-
-    setAction(newAction)
-    if (newAction === "SUCK") {
-      setTotalDirt((prev) => prev + 1)
-    }
-
-    const newPosition = newEnvironment.applyAction(newAction, agentPosition)
-
-    setEnvironment(newEnvironment)
-    setAgentPosition(newPosition)
-    setStepCount((prev) => prev + 1)
-  }
+  };
 
   const startStop = () => {
-    setIsRunning(!isRunning)
-  }
+    setIsRunning(!isRunning);
+  };
 
   const reset = () => {
-    setEnvironment(new Environment())
-    setAgentPosition(0)
-    setAction("")
-    setIsRunning(false)
-    setStepCount(0)
-    setTotalDirt(0)
-  }
+    setEnvironment(new Environment());
+    setAgentPosition(0);
+    setAction("");
+    setIsRunning(false);
+    setStepCount(0);
+    setTotalDirt(0);
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
@@ -123,6 +123,5 @@ export default function Home() {
         <Button onClick={reset}>Reset</Button>
       </div>
     </div>
-  )
+  );
 }
-
