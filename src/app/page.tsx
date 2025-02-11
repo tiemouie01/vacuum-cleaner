@@ -32,12 +32,14 @@ class Environment {
 }
 
 export default function Home() {
-  const [environment, setEnvironment] = useState(new Environment());
-  const [agentPosition, setAgentPosition] = useState(0);
-  const [action, setAction] = useState("");
-  const [isRunning, setIsRunning] = useState(false);
-  const [stepCount, setStepCount] = useState(0);
-  const [totalDirt, setTotalDirt] = useState(0);
+  const [environment, setEnvironment] = useState<Environment>(
+    new Environment()
+  );
+  const [agentPosition, setAgentPosition] = useState<number>(0);
+  const [action, setAction] = useState<string>("");
+  const [isRunning, setIsRunning] = useState<boolean>(false);
+  const [stepCount, setStepCount] = useState<number>(0);
+  const [totalDirt, setTotalDirt] = useState<number>(0);
 
   const step = useCallback(() => {
     const perceive = () => {
@@ -50,6 +52,7 @@ export default function Home() {
     const newEnvironment = new Environment();
     newEnvironment.rooms = [...environment.rooms];
 
+    // Randomize the state of the rooms at every 5 steps.
     if (stepCount % 5 === 0) {
       newEnvironment.randomize();
     }
@@ -79,7 +82,7 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [isRunning, step]);
 
-  const act = (perception: { position: number; isDirty: boolean }) => {
+  const act = (perception: { position: number; isDirty: boolean }): string => {
     if (perception.isDirty) {
       return "SUCK";
     } else if (perception.position === 0) {
