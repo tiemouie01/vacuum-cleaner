@@ -3,9 +3,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import Room from "@/components/Room";
-import VacuumCleaner from "@/components/VacuumCleaner";
 
 class Environment {
+  // The rooms are either dirty(true) or clean(false).
   rooms: boolean[];
 
   constructor() {
@@ -109,7 +109,6 @@ export default function Home() {
         <Room isDirty={environment.rooms[0]} isActive={agentPosition === 0} />
         <Room isDirty={environment.rooms[1]} isActive={agentPosition === 1} />
       </div>
-      <VacuumCleaner position={agentPosition} />
       <div className="mt-6 space-y-2">
         <p className="text-lg">Step: {stepCount}</p>
         <p className="text-lg">Action: {action}</p>
