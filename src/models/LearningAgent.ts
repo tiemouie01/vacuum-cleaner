@@ -6,12 +6,14 @@ export class LearningAgent {
   schedule: Schedule;
   dirtPredictions: Map<string, number>;
   cleaningTimePredictions: Map<string, number>;
+  private previousPositions: Position[];
 
   constructor(environment: Environment, schedule: Schedule) {
     this.position = { x: 0, y: 0, floor: 0 };
     this.schedule = schedule;
     this.dirtPredictions = new Map();
     this.cleaningTimePredictions = new Map();
+    this.previousPositions = [];
 
     // Initialize predictions
     for (let floor = 0; floor < environment.floors; floor++) {
@@ -38,7 +40,7 @@ export class LearningAgent {
 
     if (currentRoom.isDirty && !this.schedule.isRoomOccupied(this.position)) {
       // Clean the room
-      dirtCleaned = currentRoom.clean(6); // Clean for 6 time units
+      dirtCleaned = currentRoom.clean(5); // Clean for 5 time units
       this.updatePredictions(this.position, currentRoom);
     } else {
       // Move to next room
@@ -53,7 +55,7 @@ export class LearningAgent {
 
   private findNextRoom(environment: Environment): Position {
     let bestPosition = this.position;
-    let bestScore = Number.NEGATIVE_INFINITY;
+    let bestScore = this.evaluatePosition(this.position);
 
     const directions = [
       { x: 1, y: 0 },
@@ -76,12 +78,17 @@ export class LearningAgent {
         !this.schedule.isRoomOccupied(newPos)
       ) {
         const score = this.evaluatePosition(newPos);
-        console.log(score);
         if (score > bestScore) {
           bestScore = score;
           bestPosition = newPos;
         }
       }
+    }
+
+    // Update position history
+    this.previousPositions.push(this.position);
+    if (this.previousPositions.length > 5) {
+      this.previousPositions.shift(); // Keep last 5 positions
     }
 
     return bestPosition;
@@ -91,7 +98,25 @@ export class LearningAgent {
     const key = this.positionToString(position);
     const dirtiness = this.dirtPredictions.get(key) || 0;
     const cleaningTime = this.cleaningTimePredictions.get(key) || 10;
-    return dirtiness / cleaningTime;
+
+    // Base score is the dirt-to-cleaning-time ratio
+    let score = dirtiness / cleaningTime;
+
+    // Add penalty for recently visited positions
+    const visitCount = this.previousPositions.filter(
+      (pos) =>
+        pos.x === position.x &&
+        pos.y === position.y &&
+        pos.floor === position.floor
+    ).length;
+
+    // Apply a significant penalty for revisiting positions
+    score -= visitCount * 0.3;
+
+    // Add small random noise to break ties and prevent oscillation
+    score += Math.random() * 0.1;
+
+    return score;
   }
 
   private updatePredictions(position: Position, room: Room) {
