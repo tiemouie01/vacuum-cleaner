@@ -1,36 +1,125 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Intelligent Vacuum Cleaner Simulation
+
+A Next.js-based simulation of an intelligent vacuum cleaner agent, demonstrating both basic and advanced AI cleaning behaviors. This project showcases different levels of complexity in autonomous agent decision-making and environment interaction.
+
+## Features
+
+### Basic Version (Home Page)
+
+- Simple 2-room environment simulation
+- Basic reflex agent behavior:
+  - Cleans when room is dirty
+  - Moves between rooms in a fixed pattern
+- Room states:
+  - Clean/Dirty visualization
+  - Random dirt generation every 5 steps
+- Real-time statistics:
+  - Step counter
+  - Current action display
+  - Total dirt cleaned counter
+- Interactive controls:
+  - Start/Stop simulation
+  - Step-by-step execution
+  - Reset functionality
+
+### Advanced Version (/advanced)
+
+- Multi-floor building simulation (2 floors, 3x3 rooms each)
+- Sophisticated learning agent with:
+  - Dirt prediction capabilities
+  - Cleaning time optimization
+  - Adaptive movement patterns
+- Dynamic environment features:
+  - Variable dirt levels per room
+  - Room occupancy scheduling
+  - Multiple floors navigation
+- Enhanced visualization:
+  - Building layout display
+  - Agent position tracking
+  - Room occupancy indicators
+- Detailed performance metrics:
+  - Time tracking
+  - Total dirt cleaned
+  - Current position coordinates
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js (v18 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone <repository-url>
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Run the development server:
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Navigation
 
-## Learn More
+- Use the navigation menu at the top to switch between Basic and Advanced simulations
+- Basic simulation: [http://localhost:3000/](http://localhost:3000/)
+- Advanced simulation: [http://localhost:3000/advanced](http://localhost:3000/advanced)
 
-To learn more about Next.js, take a look at the following resources:
+### Controls
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Both versions feature similar control mechanisms:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Start/Stop**: Toggle the automatic simulation
+- **Step**: Manually advance the simulation by one step
+- **Reset**: Return the environment to its initial state
 
-## Deploy on Vercel
+## Technical Details
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Technologies Used
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Next.js 14
+- React 19
+- TypeScript
+- Tailwind CSS
+- Radix UI Components
+- shadcn/ui
+
+### Project Structure
+
+- `src/app/`: Main application pages and routing
+- `src/components/`: Reusable React components
+- `src/models/`: Core simulation logic and classes
+- `src/lib/`: Utility functions and helpers
+
+### Key Components
+
+- `Environment`: Manages the simulation space and room states
+- `LearningAgent`: Implements the intelligent cleaning algorithm
+- `Schedule`: Handles room occupancy and timing
+- `Building`: Renders the multi-floor visualization
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
