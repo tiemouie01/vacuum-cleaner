@@ -54,7 +54,7 @@ A Next.js-based simulation of an intelligent vacuum cleaner agent, demonstrating
 1. Clone the repository:
 
 ```bash
-git clone [https://github.com/tiemouie01/vacuum-cleaner](https://github.com/tiemouie01/vacuum-cleaner)
+git clone https://github.com/tiemouie01/vacuum-cleaner/
 ```
 
 2. Install dependencies:
