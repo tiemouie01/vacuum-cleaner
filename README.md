@@ -54,7 +54,7 @@ A Next.js-based simulation of an intelligent vacuum cleaner agent, demonstrating
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone [https://github.com/tiemouie01/vacuum-cleaner](https://github.com/tiemouie01/vacuum-cleaner)
 ```
 
 2. Install dependencies:
@@ -115,11 +115,3 @@ Both versions feature similar control mechanisms:
 - `LearningAgent`: Implements the intelligent cleaning algorithm
 - `Schedule`: Handles room occupancy and timing
 - `Building`: Renders the multi-floor visualization
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
