@@ -74,7 +74,9 @@ export default function AdvancedPage() {
             <Button onClick={step} disabled={isRunning}>
               Step
             </Button>
-            <Button onClick={reset}>Reset</Button>
+            <Button disabled onClick={reset}>
+              Reset
+            </Button>
           </div>
         </div>
       </div>
