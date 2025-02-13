@@ -107,7 +107,9 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <h1 className="text-3xl font-bold mb-6">Vacuum Cleaner Simulation</h1>
+      <h1 className="text-3xl text-center font-bold mb-6">
+        Vacuum Cleaner Simulation
+      </h1>
       <div className="flex space-x-4 mb-6">
         <Room isDirty={environment.rooms[0]} isActive={agentPosition === 0} />
         <Room isDirty={environment.rooms[1]} isActive={agentPosition === 1} />
